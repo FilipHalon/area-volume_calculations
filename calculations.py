@@ -41,32 +41,33 @@ class RegularPyramid(Triangle, RectangleAreaMixin):
         if self.base_num_of_sides == 3:
             self.side_b = self.side_b * sqrt(3) / 2
         self.pyramid_height = pyramid_height
-        self.__slant_height = self.calculate_slant_height()
         self.__base_area = self.calculate_base_area()
 
-    def calculate_slant_height(self):
-        return sqrt((self.side_b / 2) ** 2 + self.pyramid_height ** 2)
+    def calculate_edge_length(self):
+        return sqrt(self.side_a ** 2 / 3 + self.pyramid_height ** 2)
 
-    @property
-    def slant_height(self):
-        return self.__slant_height
+    def calculate_slant_height(self):
+        if self.base_num_of_sides == 3:
+            return sqrt((4 * self.calculate_edge_length() ** 2 - self.side_a ** 2)/4)
+        else:
+            return sqrt((self.side_b / 2) ** 2 + self.pyramid_height ** 2)
 
     def calculate_base_area(self):
         if self.base_num_of_sides < 3:
-            raise ValueError("This is not a tri-dimensional figure.")
+            raise ValueError("This is not a three-dimensional shape.")
         elif self.base_num_of_sides == 3:
             return super().calculate_area()
         elif self.base_num_of_sides == 4:
             return super().calculate_rectangle_area()
         else:
-            raise ValueError("Unsupported number of sides. No more than 4 is supported.")
+            raise ValueError("Unsupported number of base sides. No more than 4 is supported.")
 
     @property
     def base_area(self):
         return self.__base_area
 
     def calculate_area(self):
-        slant = Triangle(self.side_a, self.__slant_height)
+        slant = Triangle(self.side_a, self.calculate_slant_height())
         return self.__base_area + slant.calculate_area() * self.base_num_of_sides
 
     def calculate_volume(self):
