@@ -60,7 +60,7 @@ class RegularPyramid(Triangle, RectangleAreaMixin):
         elif self.base_num_of_sides == 4:
             return super().calculate_rectangle_area()
         else:
-            raise ValueError("Unsupported number of base sides. No more than 4 is supported.")
+            raise ValueError("Unsupported number of sides. No more than 4 is supported.")
 
     @property
     def base_area(self):
